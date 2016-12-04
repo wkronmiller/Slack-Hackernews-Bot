@@ -5,6 +5,10 @@ import request from 'request';
 import htmlToText from 'html-to-text';
 import {redisConfig, slackConfig} from './config';
 
+const VERSION = "0.0.4";
+
+console.log(`Starting HN-Bot v.${VERSION}`);
+
 
 function checkPost(postId){
     return new Promise((resolve, reject) => {
@@ -43,7 +47,8 @@ sendMessage('Hackernews online');
 const redisClient = redis.createClient({host: redisConfig.host});
 
 (function monitorNews() {
-    const storyPromises = hn.getTopStories().map((postId) => {
+    const storyIds = new Set(hn.getShowStories().concat(hn.getTopStories()));
+    const storyPromises = Array.from(storyIds).map((postId) => {
         return checkPost(postId);
     });
     Promise.all(storyPromises)

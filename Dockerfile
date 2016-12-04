@@ -12,4 +12,4 @@ COPY *.js ${workdir}/
 COPY .babelrc ${workdir}/
 
 
-CMD ["npm", "start"]
+CMD ["npm", "start-prod"]
